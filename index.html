@@ -102,20 +102,25 @@ section{position:relative}
 .projects{padding:80px 24px 120px}
 .project-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:24px}
 .project-card{position:relative;background:var(--glass);border:1px solid var(--glass-border);
-  border-radius:var(--radius);padding:32px;overflow:hidden;
+  border-radius:var(--radius);padding:0;overflow:hidden;
   backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
   transition:all 0.4s cubic-bezier(0.4,0,0.2,1);cursor:default}
 .project-card::before{content:'';position:absolute;inset:0;opacity:0;
   background:linear-gradient(135deg,rgba(99,102,241,0.08),rgba(168,85,247,0.08));
-  transition:opacity 0.4s}
+  transition:opacity 0.4s;z-index:0}
 .project-card:hover{transform:translateY(-6px) scale(1.01);border-color:rgba(255,255,255,0.15);
   box-shadow:0 24px 64px rgba(0,0,0,0.4)}
 .project-card:hover::before{opacity:1}
-.project-card .card-icon{width:56px;height:56px;border-radius:16px;
-  background:linear-gradient(135deg,rgba(99,102,241,0.15),rgba(168,85,247,0.15));
-  display:flex;align-items:center;justify-content:center;margin-bottom:20px;
+.project-card .card-screenshot{position:relative;overflow:hidden;border-bottom:1px solid var(--glass-border);
+  aspect-ratio:16/10;background:#111}
+.project-card .card-screenshot img{width:100%;height:100%;object-fit:cover;object-position:top;
+  transition:transform 0.6s cubic-bezier(0.4,0,0.2,1);filter:brightness(0.9)}
+.project-card:hover .card-screenshot img{transform:scale(1.05);filter:brightness(1)}
+.project-card .card-body{padding:24px 28px 28px}
+.project-card .card-icon{width:48px;height:48px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;margin-bottom:16px;
   position:relative;z-index:1}
-.project-card .card-icon svg{width:28px;height:28px}
+.project-card .card-icon svg{width:24px;height:24px}
 .project-card h3{font-size:1.15rem;font-weight:700;margin-bottom:8px;position:relative;z-index:1}
 .project-card .desc{color:var(--text-dim);font-size:0.9rem;line-height:1.6;margin-bottom:20px;position:relative;z-index:1}
 .project-card .links{display:flex;gap:12px;position:relative;z-index:1}
@@ -256,17 +261,17 @@ footer .brand{font-size:1.5rem;margin-bottom:8px}
 
 // --- Projects ---
 const projects=[
-  {name:"Skate Map NYC",desc:"Interactive map of every skatepark in NYC — 28 parks across all 5 boroughs with filtering, search, and detailed info cards.",repo:"skatemap",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>'},
-  {name:"Board Room NYC",desc:"Local skate shop marketplace — discover NYC's best skateboard shops, browse products, and support local.",repo:"boardroom-nyc",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>'},
-  {name:"Skate & The City",desc:"NYC skate tourism guide — curated spots, routes, shops, and food for skaters exploring the five boroughs.",repo:"skate-and-the-city",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>'},
-  {name:"TrickDex",desc:"The skateboarding trick encyclopedia — comprehensive database of tricks with difficulty ratings and descriptions.",repo:"trickdex",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>'},
-  {name:"TrickTree",desc:"Skateboarding skill tree and progression tracker — visualize your journey from beginner to pro.",repo:"tricktree",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>'},
-  {name:"Combo Kitchen",desc:"Skateboarding trick combo generator — random practice session combos to push your skills.",repo:"combo-kitchen",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>'},
-  {name:"SKATE Score",desc:"Digital Game of SKATE scorekeeper — track games with friends, no pen and paper needed.",repo:"skate-score",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M8 7v10M12 7v10M16 7v10"/></svg>'},
-  {name:"Ramp Blueprint",desc:"DIY skateboard ramp calculator — generate blueprints, materials lists, and cut diagrams for custom builds.",repo:"ramp-blueprint",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 20L22 4v16H2z"/><path d="M2 20h20" stroke-dasharray="4 2"/></svg>'},
-  {name:"Skate Setup Wizard",desc:"Find your perfect skateboard setup based on your riding style, height, and shoe size.",repo:"skate-setup-wizard",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>'},
-  {name:"Clawler",desc:"Web crawling toolkit — flexible scraping and data extraction for research and automation.",repo:"clawler",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>'},
-  {name:"Sesh Log",desc:"Skateboarding session logger — track your skate sessions, spots visited, and tricks landed over time.",repo:"sesh-log",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>'}
+  {name:"Skate Map NYC",desc:"Interactive map of every skatepark in NYC — 28 parks across all 5 boroughs with filtering, search, and detailed info cards.",repo:"skatemap",color:"#06b6d4",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/></svg>'},
+  {name:"Board Room NYC",desc:"Local skate shop marketplace — discover NYC's best skateboard shops, browse products, and support local.",repo:"boardroom-nyc",color:"#e53e3e",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="#e53e3e" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>'},
+  {name:"Skate & The City",desc:"NYC skate tourism guide — curated spots, routes, shops, and food for skaters exploring the five boroughs.",repo:"skate-and-the-city",color:"#ff6b6b",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="#ff6b6b" stroke-width="1.5"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>'},
+  {name:"TrickDex",desc:"The skateboarding trick encyclopedia — comprehensive database of tricks with difficulty ratings and descriptions.",repo:"trickdex",color:"#f97316",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="1.5"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>'},
+  {name:"TrickTree",desc:"Skateboarding skill tree and progression tracker — visualize your journey from beginner to pro.",repo:"tricktree",color:"#22c55e",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>'},
+  {name:"Combo Kitchen",desc:"Skateboarding trick combo generator — random practice session combos to push your skills.",repo:"combo-kitchen",color:"#ec4899",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="#ec4899" stroke-width="1.5"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>'},
+  {name:"SKATE Score",desc:"Digital Game of SKATE scorekeeper — track games with friends, no pen and paper needed.",repo:"skate-score",color:"#f59e0b",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="1.5"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M8 7v10M12 7v10M16 7v10"/></svg>'},
+  {name:"Ramp Blueprint",desc:"DIY skateboard ramp calculator — generate blueprints, materials lists, and cut diagrams for custom builds.",repo:"ramp-blueprint",color:"#d97706",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="#d97706" stroke-width="1.5"><path d="M2 20L22 4v16H2z"/><path d="M2 20h20" stroke-dasharray="4 2"/></svg>'},
+  {name:"Skate Setup Wizard",desc:"Find your perfect skateboard setup based on your riding style, height, and shoe size.",repo:"skate-setup-wizard",color:"#f43f5e",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="#f43f5e" stroke-width="1.5"><path d="M12 15a3 3 0 100-6 3 3 0 000 6z"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 01-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>'},
+  {name:"Clawler",desc:"Web crawling toolkit — flexible scraping and data extraction for research and automation.",repo:"clawler",color:"#06b6d4",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>'},
+  {name:"Sesh Log",desc:"Skateboarding session logger — track your skate sessions, spots visited, and tricks landed over time.",repo:"sesh-log",color:"#8b5cf6",icon:'<svg viewBox="0 0 24 24" fill="none" stroke="#8b5cf6" stroke-width="1.5"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>'}
 ];
 
 const grid=document.getElementById('projectGrid');
@@ -275,19 +280,24 @@ projects.forEach((p,i)=>{
   card.className='project-card reveal';
   card.style.transitionDelay=`${i*0.05}s`;
   const hasPages=!['clawler'].includes(p.repo);
+  const hexToRgb=(h)=>{const r=parseInt(h.slice(1,3),16),g=parseInt(h.slice(3,5),16),b=parseInt(h.slice(5,7),16);return`${r},${g},${b}`};
+  const rgb=hexToRgb(p.color);
   card.innerHTML=`
-    <div class="card-icon">${p.icon}</div>
-    <h3>${p.name}</h3>
-    <p class="desc">${p.desc}</p>
-    <div class="links">
-      <a href="https://github.com/clawdiard/${p.repo}" target="_blank">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-        Source
-      </a>
-      ${hasPages?`<a href="https://clawdiard.github.io/${p.repo}/" target="_blank">
-        <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
-        Live Site
-      </a>`:''}
+    ${hasPages?`<div class="card-screenshot"><img src="screenshots/${p.repo}.png" alt="${p.name} preview" loading="lazy"></div>`:''}
+    <div class="card-body">
+      <div class="card-icon" style="background:linear-gradient(135deg,rgba(${rgb},0.2),rgba(${rgb},0.05))">${p.icon}</div>
+      <h3>${p.name}</h3>
+      <p class="desc">${p.desc}</p>
+      <div class="links">
+        <a href="https://github.com/clawdiard/${p.repo}" target="_blank">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          Source
+        </a>
+        ${hasPages?`<a href="https://clawdiard.github.io/${p.repo}/" target="_blank">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"/></svg>
+          Live Site
+        </a>`:''}
+      </div>
     </div>`;
   grid.appendChild(card);
 });
