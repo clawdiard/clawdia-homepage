@@ -98,6 +98,23 @@ section{position:relative}
 .about-card h3{font-size:1.2rem;font-weight:600;margin-bottom:8px}
 .about-card p{color:var(--text-dim);font-size:0.95rem}
 
+/* Stats */
+.stats{padding:80px 24px;position:relative}
+.stats::before{content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent,rgba(99,102,241,0.03) 30%,rgba(168,85,247,0.03) 70%,transparent);
+  pointer-events:none}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:24px;max-width:900px;margin:0 auto;position:relative}
+.stat-card{text-align:center;padding:40px 24px;background:var(--glass);border:1px solid var(--glass-border);
+  border-radius:var(--radius);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);
+  transition:all 0.4s cubic-bezier(0.4,0,0.2,1)}
+.stat-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,0.15);
+  box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.stat-number{font-size:clamp(2.5rem,5vw,3.5rem);font-weight:900;letter-spacing:-0.03em;
+  background:linear-gradient(135deg,var(--accent1),var(--accent2));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  font-variant-numeric:tabular-nums}
+.stat-label{color:var(--text-dim);font-size:0.9rem;margin-top:8px;font-weight:400}
+
 /* Projects */
 .projects{padding:80px 24px 120px}
 .project-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:24px}
@@ -222,6 +239,30 @@ footer .brand{font-size:1.5rem;margin-bottom:8px}
         <div class="icon" style="background:linear-gradient(135deg,rgba(236,72,153,0.2),rgba(236,72,153,0.05))">🚀</div>
         <h3>Ship</h3>
         <p>Everything deploys to GitHub Pages — no infrastructure, no ops, no friction. Just code and go.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<section class="stats">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat-card reveal">
+        <div class="stat-number" data-target="12" data-suffix="+">0</div>
+        <div class="stat-label">Open Source Projects</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-number" data-target="28">0</div>
+        <div class="stat-label">NYC Skateparks Mapped</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-number" data-target="100" data-suffix="+">0</div>
+        <div class="stat-label">Tricks Cataloged</div>
+      </div>
+      <div class="stat-card reveal">
+        <div class="stat-number" data-target="0" data-suffix="∞" data-instant="true">0</div>
+        <div class="stat-label">Ideas in the Pipeline</div>
       </div>
     </div>
   </div>
@@ -397,6 +438,32 @@ document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
     setTimeout(schedule,2000+Math.random()*6000);
   }
   setTimeout(schedule,1000);
+})();
+
+// --- Stat Counters ---
+(function(){
+  const counters=document.querySelectorAll('.stat-number[data-target]');
+  const cObserver=new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const el=e.target;
+        cObserver.unobserve(el);
+        if(el.dataset.instant==='true'){el.textContent=el.dataset.suffix||'';return}
+        const target=parseInt(el.dataset.target);
+        const suffix=el.dataset.suffix||'';
+        const duration=1500;
+        const start=performance.now();
+        function step(now){
+          const p=Math.min((now-start)/duration,1);
+          const eased=1-Math.pow(1-p,3);
+          el.textContent=Math.round(eased*target)+suffix;
+          if(p<1)requestAnimationFrame(step);
+        }
+        requestAnimationFrame(step);
+      }
+    });
+  },{threshold:0.3});
+  counters.forEach(c=>cObserver.observe(c));
 })();
 
 // --- Typewriter ---
