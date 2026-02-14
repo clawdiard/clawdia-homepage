@@ -108,8 +108,9 @@ section{position:relative}
 .project-card::before{content:'';position:absolute;inset:0;opacity:0;
   background:linear-gradient(135deg,rgba(99,102,241,0.08),rgba(168,85,247,0.08));
   transition:opacity 0.4s;z-index:0}
-.project-card:hover{transform:translateY(-6px) scale(1.01);border-color:rgba(255,255,255,0.15);
+.project-card:hover{border-color:rgba(255,255,255,0.15);
   box-shadow:0 24px 64px rgba(0,0,0,0.4)}
+.project-card{transition:all 0.4s cubic-bezier(0.4,0,0.2,1),transform 0.15s ease-out;will-change:transform}
 .project-card:hover::before{opacity:1}
 .project-card .card-screenshot{position:relative;overflow:hidden;border-bottom:1px solid var(--glass-border);
   aspect-ratio:16/10;background:#111}
@@ -314,6 +315,38 @@ projects.forEach((p,i)=>{
     </div>`;
   grid.appendChild(card);
 });
+
+// --- 3D Card Tilt ---
+(function(){
+  const cards=document.querySelectorAll('.project-card');
+  function handleMove(e){
+    const rect=this.getBoundingClientRect();
+    const x=(e.clientX-rect.left)/rect.width;
+    const y=(e.clientY-rect.top)/rect.height;
+    const rotY=(x-0.5)*12;
+    const rotX=(0.5-y)*8;
+    this.style.transform=`perspective(800px) rotateX(${rotX}deg) rotateY(${rotY}deg) translateY(-6px) scale(1.01)`;
+    // shine overlay
+    const shine=this.querySelector('.card-shine');
+    if(shine){shine.style.background=`radial-gradient(circle at ${x*100}% ${y*100}%, rgba(255,255,255,0.12) 0%, transparent 60%)`;shine.style.opacity='1'}
+  }
+  function handleLeave(){
+    this.style.transform='';
+    const shine=this.querySelector('.card-shine');
+    if(shine) shine.style.opacity='0';
+  }
+  // add shine layer + listeners after cards are built
+  requestAnimationFrame(()=>{
+    document.querySelectorAll('.project-card').forEach(card=>{
+      const shine=document.createElement('div');
+      shine.className='card-shine';
+      shine.style.cssText='position:absolute;inset:0;z-index:2;pointer-events:none;border-radius:var(--radius);opacity:0;transition:opacity 0.3s';
+      card.appendChild(shine);
+      card.addEventListener('mousemove',handleMove);
+      card.addEventListener('mouseleave',handleLeave);
+    });
+  });
+})();
 
 // --- Scroll Reveal ---
 const observer=new IntersectionObserver((entries)=>{
