@@ -329,19 +329,19 @@ noscript~* .reveal,.no-js .reveal{opacity:1;transform:none}
   <div class="container">
     <div class="stats-grid">
       <div class="stat-card reveal">
-        <div class="stat-number" data-target="14" data-suffix="+">0</div>
+        <div class="stat-number" data-target="14" data-suffix="+"><noscript>14+</noscript>0</div>
         <div class="stat-label">Open Source Projects</div>
       </div>
       <div class="stat-card reveal">
-        <div class="stat-number" data-target="28">0</div>
+        <div class="stat-number" data-target="28"><noscript>28</noscript>0</div>
         <div class="stat-label">NYC Skateparks Mapped</div>
       </div>
       <div class="stat-card reveal">
-        <div class="stat-number" data-target="100" data-suffix="+">0</div>
+        <div class="stat-number" data-target="100" data-suffix="+"><noscript>100+</noscript>0</div>
         <div class="stat-label">Tricks Cataloged</div>
       </div>
       <div class="stat-card reveal">
-        <div class="stat-number" data-target="42" data-suffix="+">0</div>
+        <div class="stat-number" data-target="42" data-suffix="+"><noscript>42+</noscript>0</div>
         <div class="stat-label">Ideas in the Pipeline</div>
       </div>
     </div>
@@ -495,8 +495,12 @@ function initReveal(){
   document.querySelectorAll('.reveal:not(.visible)').forEach(el=>observer.observe(el));
 }
 initReveal();
-// Fallback: force-reveal anything still hidden after 3s
-setTimeout(()=>{document.querySelectorAll('.reveal:not(.visible)').forEach(el=>el.classList.add('visible'))},3000);
+// Fallback: force-reveal anything still hidden after 3s, then kick counters
+setTimeout(()=>{
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el=>el.classList.add('visible'));
+  // Re-trigger counter animation for any counters that were missed
+  if(typeof window.__kickCounters==='function')window.__kickCounters();
+},3000);
 
 // --- Cursor Glow ---
 (function(){
@@ -532,27 +536,34 @@ setTimeout(()=>{document.querySelectorAll('.reveal:not(.visible)').forEach(el=>e
 // --- Stat Counters ---
 (function(){
   const counters=document.querySelectorAll('.stat-number[data-target]');
+  function animateCounter(el){
+    if(el.dataset.animated)return;
+    el.dataset.animated='true';
+    const target=parseInt(el.dataset.target);
+    const suffix=el.dataset.suffix||'';
+    const duration=1500;
+    const start=performance.now();
+    function step(now){
+      const p=Math.min((now-start)/duration,1);
+      const eased=1-Math.pow(1-p,3);
+      el.textContent=Math.round(eased*target)+suffix;
+      if(p<1)requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
   const cObserver=new IntersectionObserver((entries)=>{
     entries.forEach(e=>{
       if(e.isIntersecting){
-        const el=e.target;
-        cObserver.unobserve(el);
-        if(el.dataset.instant==='true'){el.textContent=el.dataset.suffix||'';return}
-        const target=parseInt(el.dataset.target);
-        const suffix=el.dataset.suffix||'';
-        const duration=1500;
-        const start=performance.now();
-        function step(now){
-          const p=Math.min((now-start)/duration,1);
-          const eased=1-Math.pow(1-p,3);
-          el.textContent=Math.round(eased*target)+suffix;
-          if(p<1)requestAnimationFrame(step);
-        }
-        requestAnimationFrame(step);
+        cObserver.unobserve(e.target);
+        animateCounter(e.target);
       }
     });
   },{threshold:0.3});
   counters.forEach(c=>cObserver.observe(c));
+  // Expose kick function for fallback reveal
+  window.__kickCounters=function(){
+    counters.forEach(c=>animateCounter(c));
+  };
 })();
 
 // --- Typewriter ---
