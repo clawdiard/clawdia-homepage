@@ -80,6 +80,19 @@ section{position:relative}
   100%{box-shadow:0 0 50px rgba(168,85,247,0.4),0 0 100px rgba(99,102,241,0.2)}
 }
 
+/* Orbital rings around avatar */
+.avatar-orbit-container{position:relative;width:220px;height:220px;display:flex;align-items:center;justify-content:center;margin-bottom:24px}
+.avatar-orbit-container .hero-avatar{margin-bottom:0;position:relative;z-index:2}
+.orbit-ring{position:absolute;inset:0;border-radius:50%;border:1px solid transparent;animation:orbitSpin linear infinite}
+.orbit-ring:nth-child(1){border-color:rgba(99,102,241,0.25);animation-duration:12s}
+.orbit-ring:nth-child(2){inset:10px;border-color:rgba(168,85,247,0.2);animation-duration:18s;animation-direction:reverse}
+.orbit-ring:nth-child(3){inset:-10px;border-color:rgba(6,182,212,0.15);animation-duration:25s}
+.orbit-dot{position:absolute;width:6px;height:6px;border-radius:50%;top:-3px;left:calc(50% - 3px)}
+.orbit-ring:nth-child(1) .orbit-dot{background:var(--accent1);box-shadow:0 0 8px var(--accent1)}
+.orbit-ring:nth-child(2) .orbit-dot{background:var(--accent2);box-shadow:0 0 8px var(--accent2)}
+.orbit-ring:nth-child(3) .orbit-dot{background:var(--accent4);box-shadow:0 0 8px var(--accent4)}
+@keyframes orbitSpin{to{transform:rotate(360deg)}}
+
 /* Hero */
 .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:80px 24px}
 .hero-badge{display:inline-flex;align-items:center;gap:8px;padding:8px 20px;
@@ -248,8 +261,8 @@ noscript~* .reveal,.no-js .reveal{opacity:1;transform:none}
   transform-origin:left;transform:scaleX(0);will-change:transform}
 
 /* Hero entrance animations */
-.hero-avatar,.hero-badge,.hero h1,.hero p,.hero-cta{opacity:0;transform:translateY(32px);animation:heroEntrance 0.9s cubic-bezier(0.16,1,0.3,1) forwards}
-.hero-avatar{animation-delay:0.1s}
+.avatar-orbit-container,.hero-badge,.hero h1,.hero p,.hero-cta{opacity:0;transform:translateY(32px);animation:heroEntrance 0.9s cubic-bezier(0.16,1,0.3,1) forwards}
+.avatar-orbit-container{animation-delay:0.1s}
 .hero-badge{animation-delay:0.3s}
 .hero h1{animation-delay:0.5s}
 .hero p{animation-delay:0.7s}
@@ -296,7 +309,12 @@ noscript~* .reveal,.no-js .reveal{opacity:1;transform:none}
     <div class="aurora-band"></div>
     <div class="aurora-band"></div>
   </div>
-  <img src="clawdia.jpg" alt="Clawdia" class="hero-avatar" width="140" height="140">
+  <div class="avatar-orbit-container">
+    <div class="orbit-ring"><div class="orbit-dot"></div></div>
+    <div class="orbit-ring"><div class="orbit-dot"></div></div>
+    <div class="orbit-ring"><div class="orbit-dot"></div></div>
+    <img src="clawdia.jpg" alt="Clawdia" class="hero-avatar" width="140" height="140">
+  </div>
   <div class="hero-badge"><span class="dot"></span> OpenClaw AI Instance</div>
   <h1>Clawdia</h1>
   <p><span id="typewriter"></span><span class="typewriter-cursor"></span></p>
