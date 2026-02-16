@@ -136,6 +136,24 @@ section{position:relative}
 .about-card h3{font-size:1.2rem;font-weight:600;margin-bottom:8px}
 .about-card p{color:var(--text-dim);font-size:0.95rem}
 
+/* Tech Marquee */
+.tech-marquee{padding:48px 0;position:relative;overflow:hidden}
+.tech-marquee::before,.tech-marquee::after{content:'';position:absolute;top:0;bottom:0;width:120px;z-index:2;pointer-events:none}
+.tech-marquee::before{left:0;background:linear-gradient(90deg,var(--bg),transparent)}
+.tech-marquee::after{right:0;background:linear-gradient(270deg,var(--bg),transparent)}
+.marquee-label{text-align:center;font-size:0.75rem;text-transform:uppercase;letter-spacing:0.15em;color:var(--text-dim);margin-bottom:20px;font-weight:500}
+.marquee-track{display:flex;width:max-content;animation:marqueeScroll 35s linear infinite}
+.marquee-track:hover{animation-play-state:paused}
+@keyframes marqueeScroll{to{transform:translateX(-50%)}}
+.marquee-item{display:inline-flex;align-items:center;gap:8px;padding:10px 24px;margin:0 8px;
+  background:var(--glass);border:1px solid var(--glass-border);border-radius:100px;
+  backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);white-space:nowrap;
+  font-size:0.88rem;font-weight:500;color:var(--text-dim);
+  transition:all 0.3s;cursor:default}
+.marquee-item:hover{color:var(--text);border-color:rgba(255,255,255,0.2);
+  box-shadow:0 4px 20px rgba(99,102,241,0.15)}
+.marquee-item .mi-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+
 /* Stats */
 .stats{padding:80px 24px;position:relative}
 .stats::before{content:'';position:absolute;inset:0;
@@ -355,6 +373,12 @@ noscript~* .reveal,.no-js .reveal{opacity:1;transform:none}
       </div>
     </div>
   </div>
+</section>
+
+<!-- Tech Marquee -->
+<section class="tech-marquee" aria-label="Technologies used">
+  <div class="marquee-label">Built With</div>
+  <div class="marquee-track" id="marqueeTrack"></div>
 </section>
 
 <!-- Stats -->
@@ -660,6 +684,19 @@ setTimeout(()=>{
   }
   window.addEventListener('scroll',onScroll,{passive:true});
   onScroll();
+})();
+// --- Tech Marquee ---
+(function(){
+  const techs=[
+    {name:'Vite',color:'#646cff'},{name:'Astro',color:'#ff5d01'},{name:'Eleventy',color:'#1f1f1f'},
+    {name:'Leaflet',color:'#199900'},{name:'GitHub Pages',color:'#8b5cf6'},{name:'Tailwind CSS',color:'#06b6d4'},
+    {name:'JavaScript',color:'#f7df1e'},{name:'HTML5',color:'#e34f26'},{name:'CSS3',color:'#1572b6'},
+    {name:'GitHub Actions',color:'#2088ff'},{name:'PWA',color:'#5a0fc8'},{name:'OpenClaw',color:'#ec4899'},
+    {name:'Canvas API',color:'#22c55e'},{name:'Web Components',color:'#f97316'}
+  ];
+  const track=document.getElementById('marqueeTrack');
+  const html=techs.map(t=>`<span class="marquee-item"><span class="mi-dot" style="background:${t.color};box-shadow:0 0 6px ${t.color}"></span>${t.name}</span>`).join('');
+  track.innerHTML=html+html;
 })();
 </script>
 </body>
