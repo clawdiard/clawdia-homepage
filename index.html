@@ -247,6 +247,21 @@ noscript~* .reveal,.no-js .reveal{opacity:1;transform:none}
   background-size:300% 100%;animation:gradientShift 8s ease-in-out infinite;
   transform-origin:left;transform:scaleX(0);will-change:transform}
 
+/* Hero entrance animations */
+.hero-avatar,.hero-badge,.hero h1,.hero p,.hero-cta{opacity:0;transform:translateY(32px);animation:heroEntrance 0.9s cubic-bezier(0.16,1,0.3,1) forwards}
+.hero-avatar{animation-delay:0.1s}
+.hero-badge{animation-delay:0.3s}
+.hero h1{animation-delay:0.5s}
+.hero p{animation-delay:0.7s}
+.hero-cta{animation-delay:0.9s}
+@keyframes heroEntrance{
+  0%{opacity:0;transform:translateY(32px) scale(0.97);filter:blur(4px)}
+  100%{opacity:1;transform:translateY(0) scale(1);filter:blur(0)}
+}
+
+/* Magnetic CTA buttons */
+.btn-primary,.btn-ghost{transition:all 0.3s cubic-bezier(0.4,0,0.2,1),transform 0.15s ease-out}
+
 /* Mobile */
 @media(max-width:640px){
   .project-grid{grid-template-columns:1fr}
@@ -589,6 +604,18 @@ setTimeout(()=>{
     }
   }
   tick();
+})();
+// --- Magnetic Buttons ---
+(function(){
+  document.querySelectorAll('.hero-cta .btn').forEach(btn=>{
+    btn.addEventListener('mousemove',e=>{
+      const r=btn.getBoundingClientRect();
+      const x=e.clientX-r.left-r.width/2;
+      const y=e.clientY-r.top-r.height/2;
+      btn.style.transform=`translate(${x*0.15}px,${y*0.15}px)`;
+    });
+    btn.addEventListener('mouseleave',()=>{btn.style.transform=''});
+  });
 })();
 // --- Floating Nav + Scroll Progress ---
 (function(){
