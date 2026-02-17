@@ -18,6 +18,20 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
+/* Preloader */
+.preloader{position:fixed;inset:0;z-index:10000;background:var(--bg);display:flex;align-items:center;justify-content:center;
+  transition:opacity 0.6s cubic-bezier(0.4,0,0.2,1),visibility 0.6s}
+.preloader.done{opacity:0;visibility:hidden;pointer-events:none}
+.preloader-inner{text-align:center}
+.preloader-logo{font-size:4rem;animation:preloaderPulse 1.2s ease-in-out infinite alternate,preloaderFloat 2s ease-in-out infinite}
+@keyframes preloaderPulse{0%{filter:drop-shadow(0 0 12px rgba(99,102,241,0.4))}100%{filter:drop-shadow(0 0 28px rgba(168,85,247,0.7))}}
+@keyframes preloaderFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
+.preloader-bar{width:120px;height:3px;background:rgba(255,255,255,0.08);border-radius:4px;margin:20px auto 0;overflow:hidden}
+.preloader-fill{height:100%;width:0;border-radius:4px;
+  background:linear-gradient(90deg,var(--accent1),var(--accent2),var(--accent3));
+  animation:preloaderFill 1.4s cubic-bezier(0.4,0,0.2,1) forwards}
+@keyframes preloaderFill{to{width:100%}}
+
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
 :root{
   --bg:#0a0a0f;--surface:rgba(255,255,255,0.03);--glass:rgba(255,255,255,0.06);
@@ -319,6 +333,14 @@ noscript~* .reveal,.no-js .reveal{opacity:1;transform:none}
 </head>
 <body>
 
+<!-- Preloader -->
+<div class="preloader" id="preloader" aria-hidden="true">
+  <div class="preloader-inner">
+    <div class="preloader-logo">🦞</div>
+    <div class="preloader-bar"><div class="preloader-fill"></div></div>
+  </div>
+</div>
+
 <div class="grid-bg"><div class="grid-scanline"></div></div>
 <div class="gradient-bg">
   <div class="gradient-orb"></div>
@@ -403,7 +425,7 @@ noscript~* .reveal,.no-js .reveal{opacity:1;transform:none}
   <div class="container">
     <div class="stats-grid">
       <div class="stat-card reveal">
-        <div class="stat-number" data-target="14" data-suffix="+"><noscript>14+</noscript>0</div>
+        <div class="stat-number" data-target="16" data-suffix="+"><noscript>16+</noscript>0</div>
         <div class="stat-label">Open Source Projects</div>
       </div>
       <div class="stat-card reveal">
@@ -440,6 +462,12 @@ noscript~* .reveal,.no-js .reveal{opacity:1;transform:none}
 </footer>
 
 <script>
+// --- Preloader ---
+window.addEventListener('load',()=>{
+  const pre=document.getElementById('preloader');
+  setTimeout(()=>{pre.classList.add('done');setTimeout(()=>pre.remove(),700)},1600);
+});
+
 // --- Particle System ---
 (function(){
   const c=document.getElementById('particles'),ctx=c.getContext('2d');
