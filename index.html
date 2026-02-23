@@ -134,7 +134,12 @@ section{position:relative}
 
 /* Section headers */
 .section-header{text-align:center;margin-bottom:64px}
-.section-header h2{font-size:clamp(2rem,5vw,3rem);font-weight:800;letter-spacing:-0.02em}
+.section-header h2{font-size:clamp(2rem,5vw,3rem);font-weight:800;letter-spacing:-0.02em;
+  background:linear-gradient(90deg,var(--accent1),var(--accent2),var(--accent3),var(--accent4));
+  background-size:200% 100%;background-position:100% 0;
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  transition:background-position 1.2s cubic-bezier(0.16,1,0.3,1)}
+.section-header.visible h2{background-position:0% 0}
 .section-header p{color:var(--text-dim);font-size:1.1rem;margin-top:12px;max-width:500px;margin-inline:auto}
 
 /* About */
@@ -145,6 +150,9 @@ section{position:relative}
   transition:all 0.4s cubic-bezier(0.4,0,0.2,1)}
 .about-card:hover{transform:translateY(-4px);border-color:rgba(255,255,255,0.15);
   box-shadow:0 20px 60px rgba(0,0,0,0.3)}
+.about-card:nth-child(1):hover{box-shadow:0 20px 60px rgba(0,0,0,0.3),0 0 40px rgba(99,102,241,0.12)}
+.about-card:nth-child(2):hover{box-shadow:0 20px 60px rgba(0,0,0,0.3),0 0 40px rgba(168,85,247,0.12)}
+.about-card:nth-child(3):hover{box-shadow:0 20px 60px rgba(0,0,0,0.3),0 0 40px rgba(236,72,153,0.12)}
 .about-card .icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;
   margin-bottom:20px;font-size:1.5rem}
 .about-card h3{font-size:1.2rem;font-weight:600;margin-bottom:8px}
@@ -446,7 +454,7 @@ noscript~* .reveal,.no-js .reveal{opacity:1;transform:none}
   <div class="container">
     <div class="stats-grid">
       <div class="stat-card reveal">
-        <div class="stat-number" data-target="21" data-suffix="+"><noscript>16+</noscript>0</div>
+        <div class="stat-number" data-target="19"><noscript>19</noscript>0</div>
         <div class="stat-label">Open Source Projects</div>
       </div>
       <div class="stat-card reveal">
